@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.marco.swagger.model.ArticleDto;
 import com.marco.swagger.model.ArticlesResponse;
 
+import io.swagger.annotations.ApiOperation;
+
 @RequestMapping("/articles")
 @RestController
 public class MainController {
@@ -28,6 +30,7 @@ public class MainController {
     private static int counterId;
 
     @PostMapping
+    @ApiOperation(value = "It stores the new article", code = 201)
     public ResponseEntity<Void> insert(@RequestBody ArticleDto article) {
         counterId++;
         article.setId(counterId);
@@ -36,6 +39,7 @@ public class MainController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation(value = "It returns the article with the matching id", code = 200)
     public ResponseEntity<ArticleDto> get(@PathVariable("id") Integer id) {
         ArticleDto dto = articles.get(id);
         if (dto == null) {
@@ -45,6 +49,7 @@ public class MainController {
     }
 
     @GetMapping("/all")
+    @ApiOperation(value = "It returns the list of available articles", code = 200)
     public ResponseEntity<ArticlesResponse> getAll() {
 
         Set<Entry<Integer, ArticleDto>> set = articles.entrySet();
@@ -61,16 +66,18 @@ public class MainController {
     }
 
     @PutMapping()
+    @ApiOperation(value = "It updates the article", code = 200)
     public ResponseEntity<ArticleDto> update(@RequestBody ArticleDto article) {
         ArticleDto dto = articles.get(article.getId());
         if (dto == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         articles.put(article.getId(), article);
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+        return new ResponseEntity<>(article, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @ApiOperation(value = "It deletes the article", code = 204)
     public ResponseEntity<ArticleDto> delete(@PathVariable("id") Integer id) {
         ArticleDto dto = articles.get(id);
         if (dto == null) {
