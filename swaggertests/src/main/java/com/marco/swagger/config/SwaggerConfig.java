@@ -27,7 +27,7 @@ public class SwaggerConfig {
     
     private ApiInfo apiEndPointsInfo() {
         return new ApiInfoBuilder().title("Simple project to test Swagger")
-            .description("This service will allow you to use the Swagger documentation to test sum dummy API")
+            .description("This project use the Swagger documentation to document some \"dummy\" APIs")
             .contact(new Contact("Marco Solina", "", ""))
             .version("0.0.1")
             .build();
