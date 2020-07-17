@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.marco.swagger.model.ArticleDto;
 import com.marco.swagger.model.ArticlesResponse;
+import com.marco.swagger.model.InsertArticleDto;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -31,10 +32,14 @@ public class MainController {
 
     @PostMapping
     @ApiOperation(value = "It stores the new article", code = 201)
-    public ResponseEntity<Void> insert(@RequestBody ArticleDto article) {
+    public ResponseEntity<Void> insert(@RequestBody InsertArticleDto article) {
+        ArticleDto dto = new ArticleDto();
         counterId++;
-        article.setId(counterId);
-        articles.put(counterId, article);
+        dto.setId(counterId);
+        dto.setTitle(article.getTitle());
+        dto.setDesc(article.getDesc());
+        
+        articles.put(counterId, dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
