@@ -32,7 +32,7 @@ public class MainController {
 
     @PostMapping
     @ApiOperation(value = "It stores the new article", code = 201)
-    public ResponseEntity<Void> insert(@RequestBody InsertArticleDto article) {
+    public ResponseEntity<ArticleDto> insert(@RequestBody InsertArticleDto article) {
         ArticleDto dto = new ArticleDto();
         counterId++;
         dto.setId(counterId);
@@ -40,7 +40,7 @@ public class MainController {
         dto.setDesc(article.getDesc());
         
         articles.put(counterId, dto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
