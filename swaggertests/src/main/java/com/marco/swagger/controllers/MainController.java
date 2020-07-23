@@ -89,6 +89,6 @@ public class MainController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         articles.remove(id);
-        return new ResponseEntity<>(dto, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 }
