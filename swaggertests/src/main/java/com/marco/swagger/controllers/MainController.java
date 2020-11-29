@@ -34,9 +34,9 @@ public class MainController {
     
     static {
         ArticleDto dto = new ArticleDto();
-        dto.setId(counterId);
-        dto.setTitle("Default Article");
-        dto.setDesc("Default description");
+        dto.setId(counterId++);
+        dto.setTitle("Title Marco");
+        dto.setDesc("Marco description");
         articles.put(counterId, dto);
     }
 
@@ -44,11 +44,11 @@ public class MainController {
     @ApiOperation(value = "It stores the new article", code = 201)
     public ResponseEntity<ArticleDto> insert(@RequestHeader HttpHeaders headers, @RequestBody InsertArticleDto article) {
         ArticleDto dto = new ArticleDto();
-        dto.setId(counterId++);
+        dto.setId(counterId);
         dto.setTitle(article.getTitle());
         dto.setDesc(article.getDesc());
         
-        articles.put(counterId, dto);
+        articles.put(counterId++, dto);
         
         
         HttpHeaders respHeaders = generateSomeHeaders();
