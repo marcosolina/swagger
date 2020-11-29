@@ -30,9 +30,9 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 public class MainController {
     private static Map<Integer, ArticleDto> articles = new HashMap<Integer, ArticleDto>();
-    private static int counterId;
+    private int counterId;
     
-    static {
+    {
         ArticleDto dto = new ArticleDto();
         dto.setId(counterId++);
         dto.setTitle("Title Marco");
@@ -48,11 +48,12 @@ public class MainController {
         dto.setTitle(article.getTitle());
         dto.setDesc(article.getDesc());
         
-        articles.put(counterId++, dto);
+        articles.put(dto.getId(), dto);
+        counterId++;
         
         
         HttpHeaders respHeaders = generateSomeHeaders();
-        respHeaders.addAll(headers);
+        respHeaders.addAll(getCustomHeadersFromRequestHeaders(headers));
         
         return new ResponseEntity<>(dto, respHeaders, HttpStatus.CREATED);
     }
@@ -66,7 +67,7 @@ public class MainController {
         }
         
         HttpHeaders respHeaders = generateSomeHeaders();
-        respHeaders.addAll(headers);
+        respHeaders.addAll(getCustomHeadersFromRequestHeaders(headers));
         
         return new ResponseEntity<>(dto, respHeaders, HttpStatus.OK);
     }
@@ -86,7 +87,7 @@ public class MainController {
         resp.setArticles(list);
 
         HttpHeaders respHeaders = generateSomeHeaders();
-        respHeaders.addAll(headers);
+        respHeaders.addAll(getCustomHeadersFromRequestHeaders(headers));
         
         return new ResponseEntity<>(resp, respHeaders, HttpStatus.OK);
     }
@@ -101,7 +102,7 @@ public class MainController {
         articles.put(article.getId(), article);
         
         HttpHeaders respHeaders = generateSomeHeaders();
-        respHeaders.addAll(headers);
+        respHeaders.addAll(getCustomHeadersFromRequestHeaders(headers));
         
         return new ResponseEntity<>(article, respHeaders, HttpStatus.OK);
     }
@@ -119,6 +120,17 @@ public class MainController {
         respHeaders.addAll(headers);
         
         return new ResponseEntity<>(dto, respHeaders, HttpStatus.OK);
+    }
+    
+    private HttpHeaders getCustomHeadersFromRequestHeaders(HttpHeaders requestHeaders) {
+    	HttpHeaders customHeaders = new HttpHeaders();
+    	requestHeaders.forEach((k, v) -> {
+    		if(k.startsWith("custom")) {
+    			customHeaders.addAll(k, v);
+    		}
+    	});
+    	
+    	return customHeaders;
     }
     
     private HttpHeaders generateSomeHeaders() {
