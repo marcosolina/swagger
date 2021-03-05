@@ -2,3 +2,16 @@ server:
   servlet:
     context-path: /dummyservice
   port: 8081
+
+
+logging:
+  file:
+    name: ./logs/swagger.log
+  pattern:
+    console: "%d %-5level : %msg%n"
+    file: "%d %-5level : %msg%n"
+  level:
+    root: INFO
+    com:
+      marco:
+        swagger: DEBUG

@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,15 +31,18 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/articles")
 @RestController
 public class MainController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
+	
     private static Map<Integer, ArticleDto> articles = new HashMap<Integer, ArticleDto>();
     private int counterId;
     
     {
         ArticleDto dto = new ArticleDto();
-        dto.setId(counterId++);
+        dto.setId(counterId);
         dto.setTitle("Title Marco");
         dto.setDesc("Marco description");
-        articles.put(counterId, dto);
+        articles.put(counterId++, dto);
     }
 
     @PostMapping
@@ -126,6 +131,7 @@ public class MainController {
     	HttpHeaders customHeaders = new HttpHeaders();
     	requestHeaders.forEach((k, v) -> {
     		if(k.startsWith("custom")) {
+    			LOGGER.debug(String.format("Recieved Header: %s Values: %s", k, v.toString()));
     			customHeaders.addAll(k, v);
     		}
     	});
